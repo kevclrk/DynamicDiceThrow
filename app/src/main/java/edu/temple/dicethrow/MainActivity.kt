@@ -1,5 +1,6 @@
 package edu.temple.dicethrow
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,22 +20,37 @@ The Activity layout files for both Portrait and Landscape are already provided
 */
 
 class MainActivity : AppCompatActivity(), ButtonFragment.ButtonInterface {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /* TODO 1: Load fragment(s)
-            - Show only Button Fragment if portrait
-            - show both fragments if Landscape
-          */
+        // Check if this is the first time the activity is being created
+        if (savedInstanceState == null) {
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                // Portrait mode: Load only the ButtonFragment
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container1, ButtonFragment())
+                    .commit()
+            } else if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                // Landscape mode: Load both ButtonFragment and DieFragment
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container1, ButtonFragment())
+                    .replace(R.id.container2, DieFragment())
+                    .commit()
+            }
+        }
     }
 
-    /* TODO 2: switch fragments if portrait (no need to switch fragments if Landscape)
-        */
-    // Remember to place Fragment transactions on BackStack so then can be reversed
+    // TODO 2: Switch fragments in portrait mode when button is clicked
     override fun buttonClicked() {
-
+        // This action is only needed in portrait mode
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // Replace ButtonFragment with DieFragment
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container1, DieFragment())
+                .addToBackStack(null) // Allow reverse navigation with Back button
+                .commit()
+        }
     }
-
-
 }

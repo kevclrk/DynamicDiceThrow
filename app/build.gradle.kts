@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "edu.temple.dicethrow"
-        minSdk = 34
+        minSdk = 32
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
